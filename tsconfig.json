@@ -9,7 +9,8 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmitOnError": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "outDir": "build"
   },
   "exclude": ["node_modules"]
 }
