@@ -1,0 +1,36 @@
+{
+  "name": "cryptocontrol",
+  "version": "1.0.0",
+  "description": "Application to manage cryptocurrency contributions.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec node --loader ts-node/esm --inspect  server.ts --ignore-watch node_modules npm run dev --trace-sync-io"
+  },
+  "author": "Jefferson Alves",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.9.0",
+    "axios": "^1.3.3",
+    "bcrypt": "^5.1.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "express-validator": "^6.14.3",
+    "helmet": "^6.0.1",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.16",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^18.11.18",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.9.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
+}

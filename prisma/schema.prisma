@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  name          String
+  login         String          @unique
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+  isActive      Int             @default(1)
+  contributions Contributions[]
+  wallets       Wallets[]
+  withdrawals   Withdrawals[]
+
+  @@map("users")
+}
+
+model UserTokens {
+  id           Int    @id @default(autoincrement())
+  userId       Int
+  accessToken  String
+  refreshToken String
+
+  @@map("user_tokens")
+}
+
+model UserTypes {
+  id     Int @id @default(autoincrement())
+  userId Int
+  type   Int
+
+  @@map("user_types")
+}
+
+model UserLoginHistories {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  lastLogin  DateTime
+  lastLogout DateTime
+
+  @@map("user_login_histories")
+}
+
+model Wallets {
+  id            Int             @id @default(autoincrement())
+  userId        Int
+  name          String
+  createdAt     DateTime?       @default(now())
+  isActive      Int             @default(1)
+  Contributions Contributions[]
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Withdrawals   Withdrawals[]
+
+  @@map("wallets")
+}
+
+model Contributions {
+  id                                  Int       @id @default(autoincrement())
+  walletId                            Int
+  contributionSymbol                  String
+  contributionSymbolIdInCoinMarketCap Int
+  basePricesFiatCoins                 String
+  coinIdInCoinMarketCap               Int
+  coinSymbol                          String
+  coinName                            String
+  coinPrice                           Decimal   @db.Decimal
+  contributionDate                    DateTime
+  amountContribution                  Decimal   @db.Decimal
+  brokerFee                           Decimal   @db.Decimal
+  amountCoins                         Decimal   @db.Decimal
+  createdAt                           DateTime? @default(now())
+  isActive                            Int       @default(1)
+  userId                              Int
+  user                                User      @relation(fields: [userId], references: [id])
+  wallet                              Wallets   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  fiatCoin                            FiatCoins @relation(fields: [contributionSymbolIdInCoinMarketCap], references: [coinIdInCoinMarketCap])
+
+  @@map("contributions")
+}
+
+model Withdrawals {
+  id                                Int       @id @default(autoincrement())
+  walletId                          Int
+  withdrawalSymbol                  String
+  withdrawalSymbolIdInCoinMarketCap Int
+  coinIdInCoinMarketCap             Int
+  coinSymbol                        String
+  coinName                          String
+  coinPrice                         Decimal   @db.Decimal
+  withdrawalDate                    DateTime
+  amountWithdrawal                  Decimal   @db.Decimal
+  amountCoinsWithdrawal             Decimal   @db.Decimal
+  createdAt                         DateTime? @default(now())
+  isActive                          Int       @default(1)
+  userId                            Int
+  user                              User      @relation(fields: [userId], references: [id])
+  wallet                            Wallets   @relation(fields: [walletId], references: [id])
+  fiatCoin                          FiatCoins @relation(fields: [withdrawalSymbolIdInCoinMarketCap], references: [coinIdInCoinMarketCap])
+
+  @@map("withdrawals")
+}
+
+model CryptoCoins {
+  id                    Int       @id @default(autoincrement())
+  coinIdInCoinMarketCap Int
+  coinSymbol            String
+  coinName              String
+  coinThumbnailUrl      String
+  createdAt             DateTime? @default(now())
+  isActive              Int       @default(1)
+
+  @@map("cryptocoins")
+}
+
+model FiatCoins {
+  id                    Int             @id @default(autoincrement())
+  coinIdInCoinMarketCap Int             @unique
+  coinSymbol            String
+  coinName              String
+  coinSlug              String
+  coinThumbnailUrl      String?
+  createdAt             DateTime?       @default(now())
+  isActive              Int             @default(1)
+  Contributions         Contributions[]
+  Withdrawals           Withdrawals[]
+
+  @@map("fiatcoins")
+}
