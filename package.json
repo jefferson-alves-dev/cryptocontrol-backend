@@ -5,7 +5,13 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec node --loader ts-node/esm --inspect  server.ts --ignore-watch node_modules npm run dev --trace-sync-io"
+    "dev": "nodemon --exec node --loader ts-node/esm --inspect server.ts --ignore-watch node_modules npm run dev --trace-sync-io",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "prod": "nodemon ./build/server.js"
+  },
+  "prisma": {
+    "seed": "node --loader ts-node/esm --inspect prisma/seed.ts"
   },
   "author": "Jefferson Alves",
   "license": "ISC",

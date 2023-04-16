@@ -1,4 +1,4 @@
-import { header, param } from 'express-validator';
+import { header } from 'express-validator';
 
 const isIdNumber = [
   header('userId')
