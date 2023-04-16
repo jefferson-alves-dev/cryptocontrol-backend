@@ -1,22 +1,37 @@
-import { PrismaClient } from '@prisma/client';
+import { database } from '../src/database/database';
 
-export const prisma = new PrismaClient();
-
-import cryptocoins from './coins.js';
+import { cryptocoins, fiatcoins } from './coins.js';
 
 async function insertCryptoCoins() {
-  await prisma.cryptoCoins.createMany({
+  await database.cryptoCoins.createMany({
     data: cryptocoins,
+  });
+}
+
+async function insertFiatCoins() {
+  await database.fiatCoins.createMany({
+    data: fiatcoins,
   });
 }
 
 insertCryptoCoins()
   .then(async () => {
-    console.log('Cryptocoins seed has been finished.');
-    await prisma.$disconnect();
+    console.log('Crypto coins seed has been finished.');
+    await database.$disconnect();
   })
   .catch(async (e) => {
     console.error(e);
-    await prisma.$disconnect();
+    await database.$disconnect();
+    process.exit(1);
+  });
+
+insertFiatCoins()
+  .then(async () => {
+    console.log('Fiat coins seed has been finished.');
+    await database.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await database.$disconnect();
     process.exit(1);
   });
