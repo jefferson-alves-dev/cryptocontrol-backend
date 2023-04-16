@@ -3,7 +3,6 @@ import coinsController from '../../../controllers/api/v1/coins.controller.js';
 
 const routersCoins = Router();
 
-routersCoins.get('/cryptocoins', coinsController.cryptocoins);
-routersCoins.get('/fiatcoins', coinsController.fiatcoins);
+routersCoins.get('/all', coinsController.getAll);
 
 export default routersCoins;

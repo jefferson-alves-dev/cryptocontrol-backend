@@ -1,11 +1,7 @@
 import { database } from '../database/database.js';
 
-const getAllCryptoCoins = async () => {
+const getAll = async () => {
   return await database.cryptoCoins.findMany();
 };
 
-const getAllFiatCoins = async () => {
-  return await database.fiatCoins.findMany();
-};
-
-export default { getAllCryptoCoins, getAllFiatCoins };
+export default { getAll };
