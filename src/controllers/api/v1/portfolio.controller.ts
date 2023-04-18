@@ -28,7 +28,9 @@ const portfolioBalance = async (req: Request, res: Response) => {
     Number(userId)
   );
 
-  wallets.length < 1 && res.status(200).json({ wallets });
+  if (wallets.length < 1) {
+    return res.status(200).json({ wallets });
+  }
 
   const fiatCoinsId = [
     ...new Set(extractIdFiatCoins(Number(defaultFiatCoin), wallets)),

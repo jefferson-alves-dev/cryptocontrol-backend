@@ -12,7 +12,7 @@ const login = async (req: Request, res: Response) => {
   }
 
   if (user.isActive === 0) {
-    res.status(200).json({
+    return res.status(200).json({
       message: `The account linked to the '${email}' email is not available.`,
     });
   }
@@ -28,11 +28,11 @@ const login = async (req: Request, res: Response) => {
   const tokenData = await jwtHandler.generateAccessTokenAndRefreshToken(
     String(user.id)
   );
-  res.status(200).json({ ...tokenData });
+  return res.status(200).json({ ...tokenData });
 };
 
 const logout = async (req: Request, res: Response) => {
-  res.send('Logout');
+  return res.send('Logout');
 };
 
 const refreshToken = async (req: Request, res: Response) => {
