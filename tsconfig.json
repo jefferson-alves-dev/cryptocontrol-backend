@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "noEmitOnError": true,
     "noUnusedLocals": true,
-    "outDir": "build"
+    "outDir": "build",
+    "removeComments": true
   },
   "exclude": ["node_modules"]
 }

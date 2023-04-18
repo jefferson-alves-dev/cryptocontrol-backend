@@ -5,10 +5,17 @@ const portfolioBalance = async (userId: number) => {
     where: {
       userId,
       isActive: 1,
+      Contributions: {
+        some: {
+          userId,
+          isActive: 1,
+        },
+      },
     },
     select: {
       name: true,
       id: true,
+
       Contributions: {
         where: {
           userId,

@@ -23,7 +23,7 @@ const create = async (req: Request, res: Response) => {
 
   const { name } = req.body;
   await walletService.create(Number(userId), String(name));
-  res.status(201).json({ userId, name });
+  return res.status(201).json({ userId, name });
 };
 
 const getAll = async (req: Request, res: Response) => {
