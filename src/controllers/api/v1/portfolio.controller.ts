@@ -28,6 +28,8 @@ const portfolioBalance = async (req: Request, res: Response) => {
     Number(userId)
   );
 
+  wallets.length < 1 && res.status(200).json({ wallets });
+
   const fiatCoinsId = [
     ...new Set(extractIdFiatCoins(Number(defaultFiatCoin), wallets)),
   ];
@@ -60,7 +62,6 @@ const portfolioBalance = async (req: Request, res: Response) => {
       delete contribution.basePricesFiatCoins;
     });
   });
-
   const [allContributions] = await Promise.all([
     getAllContributions(wallets),
     updatePricesInContributions(
