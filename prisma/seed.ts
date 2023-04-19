@@ -1,4 +1,4 @@
-import { database } from '../src/database/database';
+import { database } from '../src/database/database.js';
 
 import { cryptocoins, fiatcoins } from './coins.js';
 
