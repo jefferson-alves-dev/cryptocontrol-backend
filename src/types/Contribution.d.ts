@@ -6,7 +6,7 @@ export type TypeContribution = {
   contributionSymbol: String;
   contributionSymbolIdInCoinMarketCap: number;
   priceCurrencyUsedForContribution?: number;
-  basePricesFiatCoins: string;
+  basePricesFiatCoins?: string;
   coinIdInCoinMarketCap: number;
   coinSymbol: String;
   coinName: String;
@@ -18,4 +18,5 @@ export type TypeContribution = {
   createdAt: Date | null;
   isActive: number;
   userId: number;
+  priceDefaultCoinAtTheTimeOfContribution?: number;
 };

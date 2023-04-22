@@ -10,6 +10,14 @@ export type TypeCoinQuoteCMC = {
   lastUpdatedTime: string;
 };
 
+type TypeCoinStatusCMC = {
+  timestamp: Date;
+  error_code: string;
+  error_message: string;
+  elapsed: string;
+  credit_count: number;
+};
+
 export type TypeCoinCMC = {
   id: number;
   name: string;
@@ -17,8 +25,5 @@ export type TypeCoinCMC = {
   slug: string;
   lastUpdatedTime: string;
   quotes: CoinQuoteCMC[];
+  status: TypeCoinStatusCMC;
 };
-
-export type TypeCoinsCMC = TypeCoinCMC[];
-
-module.exports = {};
