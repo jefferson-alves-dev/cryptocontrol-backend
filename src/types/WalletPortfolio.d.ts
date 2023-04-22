@@ -1,8 +1,8 @@
 import { Decimal } from '@prisma/client/runtime';
-import { Wallet } from './Wallet.interface';
+import { TypeWallet } from './Wallet';
 
-export interface WalletPortfolio extends Wallet {
+export type TypeWalletPortfolio = TypeWallet & {
   totalSumContributionsWallet: Decimal | number;
   walletProfit: Decimal | number;
   realBalanceWallet: Decimal | number;
-}
+};

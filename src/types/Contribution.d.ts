@@ -1,12 +1,12 @@
 import { Decimal } from '@prisma/client/runtime';
 
-export interface Contribution {
+export type TypeContribution = {
   id: number;
   walletId: number;
   contributionSymbol: String;
   contributionSymbolIdInCoinMarketCap: number;
   priceCurrencyUsedForContribution?: number;
-  basePricesFiatCoins: string;
+  basePricesFiatCoins?: string;
   coinIdInCoinMarketCap: number;
   coinSymbol: String;
   coinName: String;
@@ -18,4 +18,5 @@ export interface Contribution {
   createdAt: Date | null;
   isActive: number;
   userId: number;
-}
+  priceDefaultCoinAtTheTimeOfContribution?: number;
+};

@@ -1,11 +1,13 @@
-import { Contribution } from '../../interfaces/Contribution.interface';
-import { Wallet } from '../../interfaces/Wallet.interface';
+import { TypeContribution } from '../../types/Contribution';
+import { TypeWallet } from '../../types/Wallet';
 
-export default function extractIdCryptoCoins(wallets: Wallet[]): Array<number> {
+export default function extractIdCryptoCoins(
+  wallets: TypeWallet[]
+): Array<number> {
   const idCryptoCoins = new Array();
 
-  wallets.forEach((wallet: any) => {
-    wallet.Contributions.forEach((contribution: Contribution) => {
+  wallets.forEach((wallet: TypeWallet) => {
+    wallet.Contributions.forEach((contribution: TypeContribution) => {
       const cryptoId = contribution.coinIdInCoinMarketCap;
       idCryptoCoins.push(cryptoId);
     });

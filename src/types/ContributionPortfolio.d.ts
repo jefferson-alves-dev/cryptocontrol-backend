@@ -1,6 +1,6 @@
-import { Contribution } from './Contribution.interface';
+import { TypeContribution } from './Contribution';
 
-export interface ContributionPortfolio extends Contribution {
+export type TypeContributionPortfolio = TypeContribution & {
   cryptoCurrencyPrice: number;
   profit: number;
   profitPercent: number;
@@ -9,4 +9,4 @@ export interface ContributionPortfolio extends Contribution {
   priceDefaultCoinAtTheTimeOfContribution: number;
   priceDefaultCoinRightNow: number;
   profitDefaultCoinPercent: number;
-}
+};

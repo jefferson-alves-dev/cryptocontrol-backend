@@ -1,4 +1,4 @@
-export interface CoinQuoteCMC {
+export type TypeCoinQuoteCMC = {
   name: string;
   price: number;
   percentChange1h: number;
@@ -8,17 +8,22 @@ export interface CoinQuoteCMC {
   percentChange60d: number;
   percentChange90d: number;
   lastUpdatedTime: string;
-}
+};
 
-export interface CoinCMC {
+type TypeCoinStatusCMC = {
+  timestamp: Date;
+  error_code: string;
+  error_message: string;
+  elapsed: string;
+  credit_count: number;
+};
+
+export type TypeCoinCMC = {
   id: number;
   name: string;
   symbol: string;
   slug: string;
   lastUpdatedTime: string;
   quotes: CoinQuoteCMC[];
-}
-
-export type CoinsCMC = CoinCMC[];
-
-module.exports = {};
+  status: TypeCoinStatusCMC;
+};

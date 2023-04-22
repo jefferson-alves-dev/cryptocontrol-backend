@@ -1,8 +1,8 @@
 // import axios from 'axios';
-import axios from 'axios';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import contributionModels from '../../../models/contribution.models.js';
+import { coinmarketcapLatestQuoteResponse } from '../../../utils/requests/coinMarketCap.js';
 import jwtHandler from '../../../utils/validations/jtw.validations.js';
 
 const create = async (req: Request, res: Response) => {
@@ -10,7 +10,9 @@ const create = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ ...errors });
   }
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const decodedToken = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = decodedToken ? decodedToken.userId : '';
+
   const {
     walletId,
     contributionSymbol,
@@ -25,27 +27,24 @@ const create = async (req: Request, res: Response) => {
     amountCoins,
   } = req.body;
 
-  const responseCurrentCoinbasePrice = await axios.get(
-    `https://api.coinmarketcap.com/data-api/v3/cryptocurrency/quote/latest?id=${contributionSymbolIdInCoinMarketCap}&convertId=2781,2782,2783,2784,2785,2786,2787,2788,2789,2790,2791,2792,2793,2794,2795,2796,2797,2798,2799,2800,2801,2802,2803,2804,2805,2806,2807,2808,2809,2810,2811,2812,2823,3554,3544,2821,2817,2824,2819,2813,2820,3538,3566,3530,3540,2814,3573,1,1027,2010,1839,6636,52,1975,2,512,1831,7083,74,9023,9022,5824,6783,11841,11840`
+  const latestPrices = await coinmarketcapLatestQuoteResponse(
+    Number(contributionSymbolIdInCoinMarketCap)
   );
-  const data = responseCurrentCoinbasePrice.data;
 
-  const dataObj: any = { data: {} };
-
-  for (const item of data.data) {
-    for (const coin of item.quotes) {
-      const coinId = coin.name;
-      dataObj.data[coinId] = { price: coin.price };
-    }
-  }
-  dataObj.defaultFiatCoin = contributionSymbolIdInCoinMarketCap;
+  if (!latestPrices)
+    return res.status(500).json({
+      error: true,
+      timeoutExceeded: true,
+      message:
+        'There was a server error when capturing the current values of the coins that can be used for the contribution. Try again!',
+    });
 
   try {
     const contribution = await contributionModels.create(
       Number(walletId),
       String(contributionSymbol),
       Number(contributionSymbolIdInCoinMarketCap),
-      JSON.stringify(dataObj),
+      JSON.stringify(latestPrices),
       Number(coinIdInCoinMarketCap),
       String(coinSymbol),
       String(coinName),
@@ -75,23 +74,25 @@ const getById = async (req: Request, res: Response) => {
     return res.status(400).json({ ...errors });
   }
 
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { contributionId } = req.params;
   const contribution = await contributionModels.getById(
     Number(userId),
     Number(contributionId)
   );
+  if (!contribution) return res.status(200).json({ contribution: [] });
+
   return res.status(200).json({ contribution });
 };
 
 const getAll = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const contributions = await contributionModels.getAll(Number(userId));
   return res.status(200).json({ contributions });
 };
 
 const update = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { contributionId } = req.params;
   const {
     walletId,
@@ -136,7 +137,7 @@ const _delete = async (req: Request, res: Response) => {
     return res.status(400).json({ ...errors });
   }
 
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { contributionId } = req.params;
   const contribution = await contributionModels._delete(
     Number(userId),

@@ -1,7 +1,7 @@
-import { CoinCMC } from '../../interfaces/CoinMarketCap.interface';
+import { TypeCoinCMC } from '../../types/CoinMarketCap';
 
 export default function extractCryptoCoinPrice(
-  cryptoPrices: CoinCMC[],
+  cryptoPrices: TypeCoinCMC[],
   coinIdInCoinMarketCap: number
 ) {
   for (const crypto of cryptoPrices) {

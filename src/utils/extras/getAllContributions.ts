@@ -1,12 +1,12 @@
 import { Decimal } from '@prisma/client/runtime';
-import { Contribution } from '../../interfaces/Contribution.interface';
-import { Wallet } from '../../interfaces/Wallet.interface';
+import { TypeContribution } from '../../types/Contribution';
+import { TypeWallet } from '../../types/Wallet';
 
-export default async function getAllContributions(wallets: Wallet[]) {
+export default async function getAllContributions(wallets: TypeWallet[]) {
   const contributions: Array<number | Decimal> = [];
 
-  wallets.forEach((wallet: Wallet) => {
-    wallet.Contributions.forEach((contribution: Contribution) => {
+  wallets.forEach((wallet: TypeWallet) => {
+    wallet.Contributions.forEach((contribution: TypeContribution) => {
       contributions.push(contribution.amountContribution);
     });
   });

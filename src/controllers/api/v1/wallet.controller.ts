@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import userService from '../../../services/user.service.js';
-import walletService from '../../../services/wallet.service.js';
-import jwtHandler from '../../../utils/validations/jtw.validations.js';
-// import axios from 'axios';
+import userModels from '../../../models/user.models.js';
+import walletModels from '../../../models/wallet.models.js';
 
 const create = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -11,9 +9,9 @@ const create = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ ...errors });
   }
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
 
-  const userExists = await userService.getById(Number(userId));
+  const userExists = await userModels.getById(Number(userId));
   if (!userExists) {
     return res.status(400).json({
       message:
@@ -22,21 +20,19 @@ const create = async (req: Request, res: Response) => {
   }
 
   const { name } = req.body;
-  await walletService.create(Number(userId), String(name));
+  await walletModels.create(Number(userId), String(name));
   return res.status(201).json({ userId, name });
 };
 
 const getAll = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const wallets = await walletService.getAll(userId);
-
-  // const currentPrice = axios.get('')
+  const userId = res.locals.userId;
+  const wallets = await walletModels.getAll(Number(userId));
 
   return res.status(200).json(wallets);
 };
 
 const getById = async (req: Request, res: Response) => {
-  const { walletId }: any = req.params;
+  const walletId = req.params.walletId;
   if (!walletId)
     return res.status(400).json({ message: 'Wallet Id is required.' });
 
@@ -44,17 +40,21 @@ const getById = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Wallet Id is not a number.' });
   }
 
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const wallet = await walletService.getById(userId, Number(walletId));
+  const userId = res.locals.userId;
+  const wallet = await walletModels.getById(Number(userId), Number(walletId));
+
+  if (!wallet) {
+    return res.status(200).json({ wallet: [] });
+  }
 
   return res.status(200).json(wallet);
 };
 
 const deleteWallet = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { walletId } = req.params;
   try {
-    const queryExecute = await walletService.deleteWallet(
+    const queryExecute = await walletModels.deleteWallet(
       Number(userId),
       Number(walletId)
     );
@@ -73,7 +73,7 @@ const deleteWallet = async (req: Request, res: Response) => {
 };
 
 const updateName = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { walletId } = req.params;
   const { walletName } = req.body;
   if (!walletName) {
@@ -82,7 +82,7 @@ const updateName = async (req: Request, res: Response) => {
       .json({ message: 'The wallet name cannot be empty.' });
   }
   try {
-    const newNameWallet = await walletService.updateName(
+    const newNameWallet = await walletModels.updateName(
       Number(userId),
       Number(walletId),
       String(walletName)
@@ -102,10 +102,8 @@ const updateName = async (req: Request, res: Response) => {
 };
 
 const portfolioBalance = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const wallets = await walletService.portfolioBalance(userId);
-
-  // const currentPrice = axios.get('')
+  const userId = res.locals.userId;
+  const wallets = await walletModels.portfolioBalance(Number(userId));
 
   return res.status(200).json(wallets);
 };
