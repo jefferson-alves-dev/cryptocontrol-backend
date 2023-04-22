@@ -1,6 +1,6 @@
-import { Contribution } from './Contribution';
+import { TypeContribution } from './Contribution';
 
-export type CustomContribution = Contribution & {
+export type TypeCustomContribution = TypeContribution & {
   cryptoCurrencyPrice: number;
   profit: number;
   profitPercent: number;

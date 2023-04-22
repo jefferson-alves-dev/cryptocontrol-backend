@@ -1,6 +1,6 @@
 import { Decimal } from '@prisma/client/runtime';
 
-export type Contribution = {
+export type TypeContribution = {
   id: number;
   walletId: number;
   contributionSymbol: String;

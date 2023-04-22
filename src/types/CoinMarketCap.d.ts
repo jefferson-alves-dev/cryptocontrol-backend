@@ -1,4 +1,4 @@
-export type CoinQuoteCMC = {
+export type TypeCoinQuoteCMC = {
   name: string;
   price: number;
   percentChange1h: number;
@@ -10,7 +10,7 @@ export type CoinQuoteCMC = {
   lastUpdatedTime: string;
 };
 
-export type CoinCMC = {
+export type TypeCoinCMC = {
   id: number;
   name: string;
   symbol: string;
@@ -19,6 +19,6 @@ export type CoinCMC = {
   quotes: CoinQuoteCMC[];
 };
 
-export type CoinsCMC = CoinCMC[];
+export type TypeCoinsCMC = TypeCoinCMC[];
 
 module.exports = {};

@@ -1,6 +1,4 @@
-import { Contribution } from './Contribution';
-
-export type Wallet = {
+export type TypeWallet = {
   id: number;
   name: string;
   Contributions: Contribution[];

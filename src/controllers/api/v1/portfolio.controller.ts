@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import portfolioModels from '../../../models/portfolio.models.js';
-import { CoinCMC } from '../../../types/CoinMarketCap.js';
-import { Contribution } from '../../../types/Contribution.js';
-import { ContributionPortfolio } from '../../../types/ContributionPortfolio.js';
-import { Wallet } from '../../../types/Wallet.js';
-import { WalletPortfolio } from '../../../types/WalletPortfolio.interface';
+import { TypeCoinCMC } from '../../../types/CoinMarketCap.js';
+import { TypeContribution } from '../../../types/Contribution.js';
+import { TypeContributionPortfolio } from '../../../types/ContributionPortfolio.js';
+import { TypeWallet } from '../../../types/Wallet.js';
+import { TypeWalletPortfolio } from '../../../types/WalletPortfolio.js';
 import getAllContributions from '../../../utils/extras/getAllContributions.js';
 import updatePricesInContributions from '../../../utils/extras/updatePricesInContributions.js';
 import jwtHandler from '../../../utils/validations/jtw.validations.js';
@@ -24,7 +24,7 @@ const portfolioBalance = async (req: Request, res: Response) => {
     });
   }
   const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const wallets: Wallet[] = await portfolioModels.portfolioBalance(
+  const wallets: TypeWallet[] = await portfolioModels.portfolioBalance(
     Number(userId)
   );
 
@@ -52,11 +52,11 @@ const portfolioBalance = async (req: Request, res: Response) => {
     axios.get(urlGetCryptoCurrencyPrice),
   ]);
 
-  const fiatPrices: CoinCMC[] = responseFiatPrices.data.data;
+  const fiatPrices: TypeCoinCMC[] = responseFiatPrices.data.data;
 
-  const cryptoPrices: CoinCMC[] = responseCryptoPrices.data.data;
+  const cryptoPrices: TypeCoinCMC[] = responseCryptoPrices.data.data;
 
-  wallets.map((wallet: Wallet) => {
+  wallets.map((wallet: TypeWallet) => {
     wallet.Contributions.map((contribution: any) => {
       const coinFiatPrices: any = JSON.parse(contribution.basePricesFiatCoins);
       contribution.priceDefaultCoinAtTheTimeOfContribution =
@@ -73,14 +73,14 @@ const portfolioBalance = async (req: Request, res: Response) => {
     ),
   ]);
 
-  wallets.forEach((wallet: Wallet) => {
-    const walletPortfolio = wallet as WalletPortfolio;
+  wallets.forEach((wallet: TypeWallet) => {
+    const walletPortfolio = wallet as TypeWalletPortfolio;
 
     const { Contributions } = wallet;
 
     const { totalSumContributions, profit } = Contributions.reduce(
-      (accumulatedValues, contribution: Contribution) => {
-        const contributionPortfolio = contribution as ContributionPortfolio;
+      (accumulatedValues, contribution: TypeContribution) => {
+        const contributionPortfolio = contribution as TypeContributionPortfolio;
         const {
           amountContribution,
           brokerFee,
@@ -131,8 +131,8 @@ const portfolioBalance = async (req: Request, res: Response) => {
 
   const totalBalance: any = [];
 
-  wallets.forEach((wallet: Wallet) => {
-    const walletPortfolio = wallet as WalletPortfolio;
+  wallets.forEach((wallet: TypeWallet) => {
+    const walletPortfolio = wallet as TypeWalletPortfolio;
     totalBalance.push(walletPortfolio.realBalanceWallet);
   });
 
