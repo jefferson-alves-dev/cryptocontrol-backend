@@ -1,4 +1,4 @@
-import { CoinCMC } from '../../types/CoinMarketCap.interface';
+import { CoinCMC } from '../../types/CoinMarketCap';
 
 export default function extractCryptoCoinPrice(
   cryptoPrices: CoinCMC[],

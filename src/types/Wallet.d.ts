@@ -1,4 +1,4 @@
-import { Contribution } from './Contribution.interface';
+import { Contribution } from './Contribution';
 
 export type Wallet = {
   id: number;

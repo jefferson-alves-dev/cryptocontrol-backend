@@ -1,6 +1,6 @@
 import { Decimal } from '@prisma/client/runtime/index.js';
-import { Contribution } from '../../types/Contribution.interface';
-import { Wallet } from '../../types/Wallet.interface';
+import { Contribution } from '../../types/Contribution';
+import { Wallet } from '../../types/Wallet';
 
 interface tempContribution extends Contribution {
   priceDefaultCoinAtTheTimeOfContribution: number;
