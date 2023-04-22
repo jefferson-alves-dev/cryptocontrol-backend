@@ -44,6 +44,10 @@ const getById = async (req: Request, res: Response) => {
   const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
   const wallet = await walletModels.getById(Number(userId), Number(walletId));
 
+  if (!wallet) {
+    return res.status(200).json({ wallet: [] });
+  }
+
   return res.status(200).json(wallet);
 };
 
