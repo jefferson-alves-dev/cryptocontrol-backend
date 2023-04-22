@@ -27,7 +27,7 @@ const create = async (req: Request, res: Response) => {
 
 const getAll = async (req: Request, res: Response) => {
   const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const wallets = await walletModels.getAll(userId);
+  const wallets = await walletModels.getAll(Number(userId));
 
   return res.status(200).json(wallets);
 };
@@ -42,7 +42,7 @@ const getById = async (req: Request, res: Response) => {
   }
 
   const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const wallet = await walletModels.getById(userId, Number(walletId));
+  const wallet = await walletModels.getById(Number(userId), Number(walletId));
 
   return res.status(200).json(wallet);
 };
@@ -100,7 +100,7 @@ const updateName = async (req: Request, res: Response) => {
 
 const portfolioBalance = async (req: Request, res: Response) => {
   const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const wallets = await walletModels.portfolioBalance(userId);
+  const wallets = await walletModels.portfolioBalance(Number(userId));
 
   return res.status(200).json(wallets);
 };
