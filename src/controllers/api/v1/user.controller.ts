@@ -3,7 +3,6 @@ import { validationResult } from 'express-validator';
 // import userService from '../../../services/user.service.js';
 import bcrypt from 'bcrypt';
 import userModels from '../../../models/user.models.js';
-import jwtHandler from '../../../utils/validations/jtw.validations.js';
 
 const getAll = async (req: Request, res: Response) => {
   const user = await userModels.getAll();
@@ -15,7 +14,7 @@ const getById = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ ...errors });
   }
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const user = await userModels.getById(Number(userId));
   return res.status(200).json({ ...user });
 };
@@ -52,14 +51,13 @@ const deleteUser = async (req: Request, res: Response) => {
     return res.status(400).json({ ...errors });
   }
 
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
-  const userExists = await userModels.getById(Number(userId));
+  const userExists = await userModels.getById(Number(res.locals.userId));
   if (!userExists) {
     return res.status(409).json({ message: 'This ID was not found.' });
   }
 
   const { name, login } = userExists;
-  await userModels.deleteUser(Number(userId));
+  await userModels.deleteUser(Number(res.locals.userId));
   return res.status(200).json({
     message: 'User deleted successfully.',
     user: {

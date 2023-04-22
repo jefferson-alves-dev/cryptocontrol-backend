@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import userModels from '../../../models/user.models.js';
 import walletModels from '../../../models/wallet.models.js';
-import jwtHandler from '../../../utils/validations/jtw.validations.js';
 
 const create = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -10,7 +9,7 @@ const create = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ ...errors });
   }
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
 
   const userExists = await userModels.getById(Number(userId));
   if (!userExists) {
@@ -26,14 +25,14 @@ const create = async (req: Request, res: Response) => {
 };
 
 const getAll = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const wallets = await walletModels.getAll(Number(userId));
 
   return res.status(200).json(wallets);
 };
 
 const getById = async (req: Request, res: Response) => {
-  const { walletId }: any = req.params;
+  const walletId = req.params.walletId;
   if (!walletId)
     return res.status(400).json({ message: 'Wallet Id is required.' });
 
@@ -41,7 +40,7 @@ const getById = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Wallet Id is not a number.' });
   }
 
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const wallet = await walletModels.getById(Number(userId), Number(walletId));
 
   if (!wallet) {
@@ -52,7 +51,7 @@ const getById = async (req: Request, res: Response) => {
 };
 
 const deleteWallet = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { walletId } = req.params;
   try {
     const queryExecute = await walletModels.deleteWallet(
@@ -74,7 +73,7 @@ const deleteWallet = async (req: Request, res: Response) => {
 };
 
 const updateName = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { walletId } = req.params;
   const { walletName } = req.body;
   if (!walletName) {
@@ -103,7 +102,7 @@ const updateName = async (req: Request, res: Response) => {
 };
 
 const portfolioBalance = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const wallets = await walletModels.portfolioBalance(Number(userId));
 
   return res.status(200).json(wallets);

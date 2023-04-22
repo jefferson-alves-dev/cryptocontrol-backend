@@ -73,7 +73,12 @@ const validateToken = async (
 
 const decodeToken = async (token: string) => {
   try {
-    return jwt.decode(token);
+    const result = jwt.decode(token);
+    if (typeof result === 'object') {
+      return result;
+    }
+
+    return false;
   } catch (error) {
     return false;
   }

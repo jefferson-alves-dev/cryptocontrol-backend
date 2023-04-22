@@ -21,6 +21,17 @@ const tokenChecker = async (
     return res.status(403).json({ error: true, statusToken: 'expired' });
   }
   res.locals.accessToken = accessToken;
+  const tokenPayload = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = tokenPayload ? tokenPayload?.userId : false;
+
+  if (!userId)
+    return res.status(403).json({
+      error: true,
+      statusToken:
+        'Could not identify the user linked to the provided token. Generate a new token and try again!',
+    });
+  res.locals.userId = Number(userId);
+
   return next();
 };
 

@@ -1,14 +1,13 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import withdrawalModels from '../../../models/withdrawal.models.js';
-import jwtHandler from '../../../utils/validations/jtw.validations.js';
 
 const create = async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ ...errors });
   }
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const {
     walletId,
     withdrawalSymbol,
@@ -54,7 +53,7 @@ const getById = async (req: Request, res: Response) => {
     return res.status(400).json({ ...errors });
   }
 
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { withdrawalId } = req.params;
   const withdrawal = await withdrawalModels.getById(
     Number(userId),
@@ -69,7 +68,7 @@ const getById = async (req: Request, res: Response) => {
 };
 
 const getAll = async (req: Request, res: Response) => {
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const withdrawal = await withdrawalModels.getAll(Number(userId));
   return res.status(200).json({ withdrawal });
 };
@@ -79,7 +78,7 @@ const update = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ ...errors });
   }
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { withdrawalId } = req.params;
   const {
     walletId,
@@ -124,7 +123,7 @@ const _delete = async (req: Request, res: Response) => {
     return res.status(400).json({ ...errors });
   }
 
-  const { userId }: any = await jwtHandler.decodeToken(res.locals.accessToken);
+  const userId = res.locals.userId;
   const { withdrawalId } = req.params;
 
   const withdrawal = await withdrawalModels._delete(

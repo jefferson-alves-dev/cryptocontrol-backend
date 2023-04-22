@@ -6,7 +6,7 @@ export default function extractIdCryptoCoins(
 ): Array<number> {
   const idCryptoCoins = new Array();
 
-  wallets.forEach((wallet: any) => {
+  wallets.forEach((wallet: TypeWallet) => {
     wallet.Contributions.forEach((contribution: TypeContribution) => {
       const cryptoId = contribution.coinIdInCoinMarketCap;
       idCryptoCoins.push(cryptoId);

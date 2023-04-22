@@ -50,18 +50,21 @@ const refreshToken = async (req: Request, res: Response) => {
       message: 'Your refresh token has been expired. Do login again!',
     });
   }
+
   if (!isRefreshTokenValid) {
     return res.status(401).json({ message: 'Invalid refresh token.' });
   }
 
   try {
-    const refreshTokenPayload: any = await jwtHandler.decodeToken(refreshToken);
-    const token = await jwtHandler.generateAccessTokenAndRefreshToken(
-      refreshTokenPayload.userId
-    );
-    return res.status(200).json({
-      ...token,
-    });
+    const refreshTokenPayload = await jwtHandler.decodeToken(refreshToken);
+    if (refreshTokenPayload) {
+      const token = await jwtHandler.generateAccessTokenAndRefreshToken(
+        refreshTokenPayload?.userId
+      );
+      return res.status(200).json({
+        ...token,
+      });
+    }
   } catch (error) {
     return res
       .status(401)
