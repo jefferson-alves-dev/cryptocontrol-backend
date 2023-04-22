@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
-import { CoinCMC } from '../../../interfaces/CoinMarketCap.interface';
-import { Contribution } from '../../../interfaces/Contribution.interface';
-import { ContributionPortfolio } from '../../../interfaces/ContributionPortfolio.interface';
-import { Wallet } from '../../../interfaces/Wallet.interface';
-import { WalletPortfolio } from '../../../interfaces/WalletPortfolio.interface';
 import portfolioModels from '../../../models/portfolio.models.js';
+import { CoinCMC } from '../../../types/CoinMarketCap.interface';
+import { Contribution } from '../../../types/Contribution.interface';
+import { ContributionPortfolio } from '../../../types/ContributionPortfolio.interface';
+import { Wallet } from '../../../types/Wallet.interface';
+import { WalletPortfolio } from '../../../types/WalletPortfolio.interface';
 import getAllContributions from '../../../utils/extras/getAllContributions.js';
 import updatePricesInContributions from '../../../utils/extras/updatePricesInContributions.js';
 import jwtHandler from '../../../utils/validations/jtw.validations.js';

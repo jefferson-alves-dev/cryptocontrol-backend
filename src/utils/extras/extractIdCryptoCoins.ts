@@ -1,5 +1,5 @@
-import { Contribution } from '../../interfaces/Contribution.interface';
-import { Wallet } from '../../interfaces/Wallet.interface';
+import { Contribution } from '../../types/Contribution.interface';
+import { Wallet } from '../../types/Wallet.interface';
 
 export default function extractIdCryptoCoins(wallets: Wallet[]): Array<number> {
   const idCryptoCoins = new Array();

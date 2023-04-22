@@ -1,7 +1,7 @@
 import { Contribution } from './Contribution.interface';
 
-export interface Wallet {
+export type Wallet = {
   id: number;
   name: string;
   Contributions: Contribution[];
-}
+};
