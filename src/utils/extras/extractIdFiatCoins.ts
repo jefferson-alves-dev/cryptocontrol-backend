@@ -1,14 +1,14 @@
-import { Contribution } from '../../types/Contribution';
-import { Wallet } from '../../types/Wallet';
+import { TypeContribution } from '../../types/Contribution';
+import { TypeWallet } from '../../types/Wallet';
 
 export default function extractIdFiatCoins(
   defaultFiatCoinId: number,
-  wallets: Wallet[]
+  wallets: TypeWallet[]
 ): Array<number> {
   const idFiatCoins = new Array();
 
-  wallets.forEach((wallet: Wallet) => {
-    wallet.Contributions.forEach((contribution: Contribution) => {
+  wallets.forEach((wallet: TypeWallet) => {
+    wallet.Contributions.forEach((contribution: TypeContribution) => {
       const contributionSymbol =
         contribution.contributionSymbolIdInCoinMarketCap;
       idFiatCoins.push(contributionSymbol);

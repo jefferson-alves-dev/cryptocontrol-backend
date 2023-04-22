@@ -1,8 +1,8 @@
 import { Decimal } from '@prisma/client/runtime/index.js';
-import { Contribution } from '../../types/Contribution';
-import { Wallet } from '../../types/Wallet';
+import { TypeContribution } from '../../types/Contribution';
+import { TypeWallet } from '../../types/Wallet';
 
-interface tempContribution extends Contribution {
+interface tempContribution extends TypeContribution {
   priceDefaultCoinAtTheTimeOfContribution: number;
   priceDefaultCoinRightNow: number;
   profitDefaultCoin: number;
@@ -10,12 +10,12 @@ interface tempContribution extends Contribution {
 }
 
 export default async function updatePricesInContributions(
-  wallets: Wallet[],
+  wallets: TypeWallet[],
   defaultFiatCoinId?: number,
   priceDefaultFiatCoinId?: number
 ) {
-  wallets.forEach((wallet: Wallet) => {
-    wallet.Contributions.forEach((contribution: Contribution) => {
+  wallets.forEach((wallet: TypeWallet) => {
+    wallet.Contributions.forEach((contribution: TypeContribution) => {
       const tempContribution = contribution as tempContribution;
 
       contribution.amountContribution =
