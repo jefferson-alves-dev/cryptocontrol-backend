@@ -56,7 +56,6 @@ const portfolioBalance = async (req: Request, res: Response) => {
 
   wallets.forEach((wallet: TypeWallet) => {
     wallet.Contributions.forEach((contribution: TypeContribution) => {
-      console.log(contribution);
       const coinFiatPrices = contribution.basePricesFiatCoins
         ? JSON.parse(contribution.basePricesFiatCoins)
         : '';
