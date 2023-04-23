@@ -24,7 +24,7 @@ const getById = async (userId: number, contributionId: number) => {
     },
   });
   if (!userWallet) {
-    throw new Error('The informed wallet must exist for the informed user.');
+    return false;
   }
   return await database.contributions.findFirst({
     where: {

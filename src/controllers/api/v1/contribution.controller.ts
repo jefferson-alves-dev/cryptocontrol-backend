@@ -80,6 +80,7 @@ const getById = async (req: Request, res: Response) => {
     Number(userId),
     Number(contributionId)
   );
+
   if (!contribution) return res.status(200).json({ contribution: [] });
 
   return res.status(200).json({ contribution });
